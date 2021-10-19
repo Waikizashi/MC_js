@@ -253,13 +253,25 @@ body {
     z-index: -1;
 }
 .button:hover {
-    background-color: #f5d100;
+    background-color: #f5c400;
 }
 .button:active {
     top: 2px;
 }
 .button:active::after {
     top: 1px;
+}
+
+.reloadWrap {
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: auto;
+}
+
+.reloadWrap .button {
+    margin-top: 0;
+    background-color: #ab0a00;
 }
 
 .winTitle {
