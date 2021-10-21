@@ -10,10 +10,11 @@ const player1 = {
     name: 'scorpion',
     hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
+    imgWin: 'https://www.mortalkombatwarehouse.com/umk3/animations/scorpion-win.gif',
     weapon:'hook',
-    chgHP: changeHP,
-    elHP: elHP,
-    rndHP: renderHP,
+    changeHP,
+    elHP,
+    renderHP,
     attack: attack = () =>{
         console.log(name + ' ' + 'FIGHT!');
     },
@@ -24,36 +25,68 @@ const player2 = {
     name: 'kitana',
     hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
+    imgWin: 'https://www.mortalkombatwarehouse.com/umk3/animations/kitana-win.gif',
     weapon:'blade',
-    chgHP: changeHP,
-    elHP: elHP,
-    rndHP: renderHP,
+    changeHP,
+    elHP,
+    renderHP,
     attack: attack = () =>{
         console.log(name + ' ' +'FIGHT!');
     },
 };
 
-const randomize = () =>{
-    return Math.ceil(Math.random() * 20);
+const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20,
 }
 
-$randomButton.addEventListener('click', () =>{
-    //console.log('####: Click');
-    player1.chgHP(randomize());
-    player1.rndHP(player1.elHP());
-    player2.chgHP(randomize());
-    player2.rndHP(player2.elHP());
+const ATTACK = ['head', 'body', 'foot'];
 
-    if (player1.hp<= 0 && !(player2.hp <=0) ){
-            showWinner(player2);
+const randomize = (value) =>{
+    return Math.ceil(Math.random() * value);
+}
+
+$control.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const enemy = enemyAttack();
+
+    const dire = {};
+    for (let item of $control) {
+        if (item.checked && item.name === 'hit') {
+            dire.hitValue = randomize(HIT[item.value]);
+            dire.hit = item.value;
         }
-    if (player2.hp<= 0 && !(player1.hp <=0)){
-            showWinner(player1);
+        if (item.checked && item.name === 'defence') {
+            dire.defence = item.value;
         }
-    if (player2.hp<= 0 && player1.hp<= 0){
-        showWinner(0);
+        item.checked = false;
     }
-});
+    controlHitDefence(dire, enemy, player1);
+    controlHitDefence(enemy, dire, player2);
+
+    if (player1.hp<= 0 && !(player2.hp <=0)) {showWinner(player2);}
+    if (player2.hp<= 0 && !(player1.hp <=0)) {showWinner(player1);}
+    if (player2.hp<= 0 && player1.hp<= 0) {showWinner(0);}
+
+})
+
+const controlHitDefence = (defender, attacker, player) =>{
+    if(defender.defence !== attacker.hit){
+        player.changeHP(attacker.hitValue);
+        player.renderHP();
+    }
+}
+
+const enemyAttack = () =>{
+    let hit = ATTACK[randomize(3) - 1];
+    let defence = ATTACK[randomize(3) - 1];
+    return{
+        hitValue: randomize(HIT[hit]),
+        hit,
+        defence,
+    }
+}
 
 const createElement = (tag, className) => {
     const $tag = document.createElement(tag);
@@ -96,6 +129,8 @@ const createReloadButton = () =>{
     $reloadButton.innerText = 'restart';
     $reloadButton.addEventListener('click', () => window.location.reload());
     $reload.appendChild($reloadButton);
+    $reloadButton.style.cursor = 'pointer';
+    $reloadButton.style.opacity = '1';
     $control.appendChild($reload);
 }
 
@@ -108,12 +143,15 @@ function changeHP(value){
     let dmg = value;
     this.hp -= (dmg <= this.hp) ? dmg : this.hp;
 }
+
 function elHP(){
     return document.querySelector('.player' + this.player + ' .life');
 }
 
-function renderHP($playerLife){
-        $playerLife.style.width = this.hp + '%';
+function renderHP(){
+    $playeLife = this.elHP();
+    //console.log('####:', $playeLife)
+    $playeLife.style.width = this.hp + '%';
 }
 
 const winPlayer = (name) =>{
@@ -129,6 +167,7 @@ const winPlayer = (name) =>{
     }
 
 }
+
 
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
