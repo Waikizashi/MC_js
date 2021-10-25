@@ -11,7 +11,7 @@ import {player1, player2} from './data.js';
 
 import {$arenas, $control} from './selectors.js';
 
-//--------------------------------Main-functions------------------------------//
+//--------------------------------Main-functions-------------------------------//
 $control.addEventListener('submit', (e) => {
     e.preventDefault();
 
