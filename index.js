@@ -67,7 +67,7 @@ async function init() {
             el.classList.add('active');
 
             setTimeout(() => {
-                //window.location.pathname = '/fightArea/index.html';
+                window.location.pathname = '/fightArea/index.html';
                 // TO_DO: Здесь должен быть код который перенаправит вас на ваше игровое поле...
                 //  Пример использования: window.location.pathname = 'arenas.html';
             }, 1000);
