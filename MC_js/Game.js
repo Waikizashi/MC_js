@@ -7,8 +7,6 @@ import {Player} from "./ClassPlayer.js";
 
 //--------------------------------Import data----------------------------------//
 
-import {player1 as p1, player2 as p2} from './data.js';
-
 //--------------------------------Import selectors-----------------------------//
 
 //--------------------------------Main-Class-----------------------------------//
@@ -18,8 +16,10 @@ export class Game extends Mechanics{
 
     constructor() {
         super();
-        this.player1 = new Player(p1);
-        this.player2 = new Player(p2);
+        const {name, hp, img } = JSON.parse(localStorage.getItem('player1'));
+        const {name: name2, hp: hp2, img: img2 } = JSON.parse(localStorage.getItem('player2'));
+        this.player1 = new Player({player: 1, name, hp, img});
+        this.player2 = new Player({player: 2, name: name2, hp: hp2, img: img2});
     }
 //--------------------------------Main-functions-------------------------------//
 
