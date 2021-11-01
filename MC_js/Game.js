@@ -24,11 +24,10 @@ export class Game extends Mechanics{
 //--------------------------------Main-functions-------------------------------//
 
     controlEvent = () =>{
-        this.$control.addEventListener('submit', (e) => {
+        this.$control.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const enemy = this.enemyAttack();
-            const dire = this.playerAttack();
+            const {player1: dire, player2: enemy} = await this.fight();
 
             this.controlHitDefence(dire, enemy, this.player1, this.player2);
             this.controlHitDefence(enemy, dire, this.player2, this.player1);

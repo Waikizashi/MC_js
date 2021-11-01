@@ -70,7 +70,7 @@ async function init() {
                 window.location.pathname = '/fightArea/index.html';
                 // TO_DO: Здесь должен быть код который перенаправит вас на ваше игровое поле...
                 //  Пример использования: window.location.pathname = 'arenas.html';
-            }, 1000);
+            }, 500);
         });
 
         img.src = item.avatar;
