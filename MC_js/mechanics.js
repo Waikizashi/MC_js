@@ -28,36 +28,63 @@ export class Mechanics extends Tools{
         if(defender.defence === attacker.hit){
             this.generateLogs('defence', attackPlayer, defencePlayer, attacker);//, defender);
         }else{
-            defencePlayer.changeHP(attacker.hitValue);
+            defencePlayer.changeHP(attacker.value);
             defencePlayer.renderHP();
             this.generateLogs('hit', attackPlayer, defencePlayer, attacker);//, defender);
         }
 
     }
 
-    enemyAttack = () =>{
-        let hit = this.ATTACK[this.randomize(3)-1];
-        let defence = this.ATTACK[this.randomize(3)-1];
-        return{
-            hitValue: this.randomize(this.HIT[hit]),
-            hit,
-            defence,
-        }
+
+    // enemyAttack = () =>{
+    //     let hit = this.ATTACK[this.randomize(3)-1];
+    //     let defence = this.ATTACK[this.randomize(3)-1];
+    //     return{
+    //         hitValue: this.randomize(this.HIT[hit]),
+    //         hit,
+    //         defence,
+    //     }
+    // }
+
+    // playerAttack = () =>{
+    //     const player = {};
+    //     for (let item of this.$control) {
+    //         if (item.checked && item.name === 'hit') {
+    //             player.hitValue = this.randomize(this.HIT[item.value]);
+    //             player.hit = item.value;
+    //         }
+    //         if (item.checked && item.name === 'defence') {
+    //             player.defence = item.value;
+    //         }
+    //         item.checked = false;
+    //     }
+    //     return player;
+    // }
+
+    getHitsData = async (hit, defence) =>{
+        return await fetch('http://reactmarathon-api.herokuapp.com/api/mk/player/fight', {
+            method: 'POST',
+            body: JSON.stringify({
+                hit,
+                defence,
+            })
+        }).then(response => response.json().catch(error => console.log(error.message)));
     }
 
-    playerAttack = () =>{
-        const player = {};
+    fight = async () =>{
+
+        const choice = {};
+        
         for (let item of this.$control) {
             if (item.checked && item.name === 'hit') {
-                player.hitValue = this.randomize(this.HIT[item.value]);
-                player.hit = item.value;
+                choice.hit = item.value;
             }
             if (item.checked && item.name === 'defence') {
-                player.defence = item.value;
+                choice.defence = item.value;
             }
             item.checked = false;
         }
-        return player;
+        return this.getHitsData(choice.hit, choice.defence);
     }
 
     winPlayer = (winner) =>{
