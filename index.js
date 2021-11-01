@@ -59,17 +59,11 @@ async function init() {
         });
 
         el.addEventListener('click', () => {
-            //TO_DO: Мы кладем нашего игрока в localStorage что бы потом на арене его достать.
-            // При помощи localStorage.getItem('player1'); т.к. в localStorage кладется строка,
-            // то мы должны ее распарсить обратным методом JSON.parse(localStorage.getItem('player1'));
-            // но это уже будет в нашем классе Game когда мы инициализируем игроков.
             localStorage.setItem('player1', JSON.stringify(item));
             el.classList.add('active');
 
             setTimeout(() => {
-                window.location.pathname = '/fightArea/index.html';
-                // TO_DO: Здесь должен быть код который перенаправит вас на ваше игровое поле...
-                //  Пример использования: window.location.pathname = 'arenas.html';
+                window.location.pathname = '/fightArea/index.html';   
             }, 500);
         });
 
